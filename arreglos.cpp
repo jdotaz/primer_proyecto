@@ -2,6 +2,13 @@
 
 using namespace std;
 
+void sawp(int arr[],int x,int y)
+{
+  int c=arr[x];
+  arr[x]=arr[y];
+  arr[y]=c;
+}
+
 void printArreglo(int arr[],int tam)
 {
   cout<<"(";
@@ -40,9 +47,8 @@ void invertir(int arr[], int tam)
   int v=tam/2;
   tam-=1;
   for (int i=0;i<v;i++){
-    int c=arr[i];
-    arr[i]=arr[tam];
-    arr[tam--]=c;
+    sawp(arr,i,tam);
+    tam--;
   }
 }
 
@@ -50,17 +56,66 @@ void invertirRec(int arr[], int tam, int i=0)
 {
   tam--;
   if(tam>i){
-    int c=arr[i];
-    arr[i]=arr[tam];
-    arr[tam]=c;
+    sawp(arr,i,tam);
     invertirRec(arr,tam,i+1);
   }
 }
 
-void burbuja(arr[],int tam){
-  while ordenado{
+void burbuja(int arr[],int tam){
+  bool cambio=true;
+  while (cambio){
+    cambio=false;
+    for(int i=0;i<tam-1;i++){
+      if (arr[i]>arr[i+1]){
+        sawp(arr,i,i+1);
+        cambio=true;
+      }
+    }
+    tam--;
   }
 }
+
+void inserccion(int arr[],int tam)
+{
+  for(int i=0;i<tam;i++){
+    int guar=arr[i];
+    int j=i;
+    while(j>0 and arr[j-1]>guar){
+      arr[j]=arr[j-1];
+      j-=1;
+    }
+    arr[j]=guar;
+  }
+}
+
+void Quick(int arr[],int primero, int ultimo)
+{
+  int i=primero;
+  int j=ultimo;
+  int pivote=(arr[i]+arr[j])/2;
+  while (i<j){
+    while(arr[i]<pivote){
+      i++;
+    }
+    while(arr[j]>pivote){
+      j--;
+    }
+    if (i<=j){
+      sawp(arr,i,j);
+      i++;
+      j--;
+    }
+  }
+  if (j>primero){
+    Quick(arr,primero,j);
+  }
+  if (i<ultimo){
+    Quick(arr,i,ultimo);
+  }
+
+
+}
+
 
 int main()
 {
@@ -79,8 +134,10 @@ int main()
   cout<<"invertir iterativa: ";
   printArreglo(arreglo,ele);
   invertir(arreglo,ele);
-  printArreglo(arreglo,ele);
+  cout<<"invertir recursiva: ";
   invertirRec(arreglo,ele);
+  printArreglo(arreglo,ele);
+  Quick(arreglo,0,ele-1);
   printArreglo(arreglo,ele);
 
 
